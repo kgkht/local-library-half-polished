@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="card mt-2">
+  <h5 class="card-header">Book Detail</h5>
+  <div class="card-body">
+    <h5 class="card-title text-secondary">{{ book.title }}</h5>
+
+
+    <ul class="list-group list-group-flush">
+      <li class=" text-right" style="list-style:none!important;">
+	<small><strong>Author:</strong> <a href="{{ book.author.get_abs_url}}">{{ book.author }}</a>
+	  
+	  {% if user.is_staff %}
+	   <br> <strong> Update: </strong>
+	  <a href="{% url 'catalog:book_update' book.id %}" class="badge badge-primary"> Update </a>
+	  <a href="{% url 'catalog:book_delete' book.id%}" class="badge badge-danger"> Delete </a>
+	  {% endif %}
+      </small></li>
+      <li class="list-group-item">
+	<em>{{ book.summary }}</em></li>
+      <li class="list-group-item">
+	<div class="row">
+	<div class="col-6"><small><strong>ISBN:</strong> {{ book.isbn }}</small> </div>
+	<div class="col-6"><small><strong>Language:</strong> {{ book.language }}</small></div></div></li>
+      <li class="list-group-item ">
+	<strong class="">Genre:</strong> {{ book.genre.all|join:", " }}</li>
+    </ul>
+    <hr class="my-4">
+    
+
+    <div style="margin-left:20px;margin-top:20px">
+      <div class="p-2 mt-5 bg-light text-dark text-monospace font-weight-bolder">Book Copies</div>
+      <div class="pl-3 pr-3">
+      {% for copy in book.bookinstance_set.all %}
+      
+    <p class="text-right mb-0 pb-0 {% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
+        {{ copy.get_status_display }}
+    </p>
+      
+    <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
+    <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
+    {% if copy.status != 'a' %}
+      <p class="text-right ">
+	<small class="badge badge-warning"><strong class="">Due to be returned:</strong> {{ copy.due_back }} </small>
+      </p>
+    {% endif %}
+      
+    <hr>
+    {% endfor %}
+    </div>
+  </div>
+  </div>
+</div>
+
+
+  
+{% endblock %}

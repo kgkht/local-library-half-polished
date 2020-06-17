@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+
+  <h1 class="d-flex justify-content-between align-items-center" >Author List <a class="badge badge-pill badge-light" href="{% url 'catalog:author_create' %}"> + <small>Create New </small></a></h1>
+  
+{% if author_list %}
+  <div class="list-group list-group-flush">
+     <a  class="list-group-item list-group-item-action d-flex justify-content-between align-items-center muted active text-light">
+       <strong>Author Name</strong>
+	<span class="badge badge-info badge-pill text-light"> Count </span>
+      </a>
+    
+    {% for author in author_list %}
+      <a type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{{ author.get_abs_url}}">
+        {{ author.first_name }} {{author.last_name}}
+	<span class="badge badge-info badge-pill text-light"> {{author.book_set.all.count}} </span>
+      </a>
+    {% endfor %}
+  </div>
+  {% else %}
+    <p>There are no books in the library.</p>
+  {% endif %}       
+
+
+{% endblock %}

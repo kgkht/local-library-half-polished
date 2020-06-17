@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <h1>Borrowed books</h1>
+
+    {% if bookinstance_list %}
+    <table class="table table-hover">
+      <thead>
+	<tr>
+	  <th scope="col">#</th>
+	  <th scope="col">Book Name</th>
+	  <th scope="col">Borrower</th>
+	  <th scope="col">Author</th>
+	  <th scope="col">Due Back</th>
+	</tr>
+      </thead>
+      <tbody>
+
+	{% for bookinst in bookinstance_list %}
+	<tr>
+	  <th scope="row">{{forloop.counter}}</th>
+	  <td>
+	    {% if perms.catalog.can_mark_returned %}
+	    <a href="{% url 'catalog:renew-book-librarian' bookinst.id %}"> {{bookinst.book.short_title}} </a>
+	    {% else %}
+	    {{bookinst.book.short_title}}
+	    {% endif %}
+	  </td>
+	  <td> {{bookinst.borrower}}
+	  <td> {{bookinst.book.author}}
+	  <td class="{% if bookinst.is_overdue %}text-danger{% endif %}">{{bookinst.due_back}}</td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+    
+    {% else %}
+      <p>There are no books borrowed.</p>
+    {% endif %}       
+{% endblock %}

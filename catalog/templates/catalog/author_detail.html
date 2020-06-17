@@ -1,0 +1,74 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="card mt-2">
+  <h5 class="card-header">Author Detail</h5>
+  <div class="card-body">
+    <h5 class="pl-3 card-title text-secondary"> {{ author.first_name }} {{author.last_name}}</h5>
+
+
+    <ul class="list-group list-group-flush">
+      <li class=" text-right" style="list-style:none!important;">
+	<small><strong>Status:</strong>
+	  {% if not author.date_of_date %}
+	  <p class="badge badge-success mb-0"> Alive </p>
+	  {% else %}
+	  <p class="badge badge-secondary mb-0"> Dead </p>
+	  {% endif %}
+	  <br> <strong> Update: </strong>
+	  {% if user.is_staff %}
+	  <a href="{% url 'catalog:author_update' author.id %}" class="badge badge-primary"> Update </a>
+	  <a href="{% url 'catalog:author_delete' author.id%}" class="badge badge-danger"> Delete </a>
+	  {% endif %}
+      </small></li>
+      {% if not author.date_of_birth and not author.date_of_death %}
+            <li class="list-group-item">
+	<div class="row">
+	<div class="col-6"><small><strong>Date of Birth:</strong> Hidden </small> </div>
+	<div class="col-6"><small><strong>Date of Death:</strong> Hidden </small></div></div></li>
+      {% else %}
+            <li class="list-group-item">
+	<div class="row">
+	<div class="col-6"><small><strong>Date of Birth:</strong> {{ author.date_of_birth }}</small> </div>
+	<div class="col-6"><small><strong>Date of Death:</strong> {{ author.date_of_death }}</small></div></div></li>
+      {% endif %}
+     
+    </ul>
+    
+
+    <div style="margin-left:20px;margin-top:20px">
+      <div class="p-2 pt-3 mt-5 bg-light text-dark text-monospace font-weight-bolder">
+	<u>Published Books</u>
+      </div>
+      <div class="">
+	
+	<table class="table">
+	  <thead class="thead-light">
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">Title </th>
+	      <th scope="col">Genre</th>
+	      <th scope="col">Language</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+      {% for book in author.book_set.all %}
+      <tr>
+      <th scope="row"> {{ forloop.counter}} </th>
+      <td><a href="{{book.get_abs_url}}">{{book.title}}</a></td>
+      <td>{% for genre in book.genre.all %} {{genre.name}}, {% endfor %}</td>
+      <td>{{book.language}}</td>
+    </tr>
+      {% endfor %}
+	  </tbody>
+	</table>
+	
+    </div>
+  </div>
+  </div>
+</div>
+
+
+  
+{% endblock %}

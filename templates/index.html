@@ -1,0 +1,126 @@
+<!doctype html>
+<html class="no-js" lang="">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  {% block title %} <title> Local Library</title> {% endblock %}
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
+  <link rel="apple-touch-icon" href="{% static 'img/icon.png' %}">
+  <!-- Place favicon.ico in the root directory -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+
+ <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 mt-2">
+      {% block sidebar %}
+        <div class="list-group list-group-flush">
+	  <a type="button" class="list-group-item list-group-item-action" href="{% url 'catalog:index' %}">Home</a>
+	  <a type="button" class="list-group-item list-group-item-action" href="{% url 'catalog:books' %}" >All Books</a>
+	  <a type="button" class="list-group-item list-group-item-action" href="{% url 'catalog:authors' %}">All Authors</a>
+	  <!--
+	  <li class="list-group-item">Porta ac consectetur ac</li>
+	  <li class="list-group-item">Vestibulum at eros</li>
+	  -->
+	</div>
+
+	<div class="card mt-5">
+	  <div class="card-header text-center">
+	    Member 
+	  </div>
+	  <div class="card-body">
+	    {% if user.is_authenticated %} 
+	    
+	    <p><a href="{% url 'catalog:profile_update' user.id  %}"> Profile </a></p>
+	    <p><a href="{% url 'catalog:my-borrowed' %}"> MY Books </a></p>
+	    <a href="{% url 'logout' %}?next={{request.path}}"> Logout </a>
+	    {% else %}
+	    <a href="{% url 'login' %}?next={{request.path}}"> Login</a>
+	    {% endif %}
+	    
+	  </div>
+	  
+
+	</div>
+
+
+	
+	{% if perms.catalog.can_mark_returned %}
+	<div class="card mt-5">
+	  <div class="card-header text-center">
+	    Librarian
+	  </div>
+	  <div class="card-body">
+	    <p><a href="{% url 'catalog:ava-books' %}"> Available Books </a> </p>
+	    <p><a href="{% url 'catalog:all-borrowed' %}"> Borrowed Books </a></p>   
+	  </div>
+	</div>
+	{% endif %}
+	
+     {% endblock %}
+      </div>
+      <div class="col-sm-9 mt-5">{% block content %}{% endblock %}</div>
+
+      
+    </div>
+ </div>
+
+
+
+ {% block pagination %}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+	{% endblock %}
+
+	
+
+
+ <!-- Footer -->
+ <ul class="nav flex-column text-center mt-3 mb-0 alert alert-light">
+   <li class="nav-item  text-muted" >Copyright &copy; 2020 </li>
+   <li class="nav-item  text-muted" ><small> Powered by <em class="text-info"> Prime Lazier </em></small> </li>
+   
+</ul>
+
+	
+  <script src="{% static 'js/vendor/modernizr-3.11.2.min.js' %}"></script>
+  <script src="{% static 'js/plugins.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
+  </script>
+<!--  <script src="https://www.google-analytics.com/analytics.js" async></script> -->
+</body>
+
+</html>

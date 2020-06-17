@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+
+{% block title %}
+<title> Home | Local Library </title>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="jumbotron mt-2">
+
+ <h5 class="display-5 text-info" > What is Local Library ? </h5>
+
+ <p class="lead">Welcome to LocalLibrary, a website developed by <em>Prime Lazier</em>!</p>
+ <hr class="my-4">
+
+ <h5 class="display-5 text-info" > How does it work? </h5>
+ <p class="lead">Welcome to LocalLibrary, a website developed by <em>Prime Lazier</em>!</p>
+
+ <hr class="my-4">
+ 
+ <p>The process is similar to creating the index page, which we showed in the previous tutorial. We'll still need to create URL maps, views, and templates. The main difference is that for the detail pages, we'll have the additional challenge of extracting information from patterns in the URL and passing it to the view. For these pages, we're going to demonstrate a completely different type of view: generic class-based list and detail views. These can significantly reduce the amount of view code needed, making them easier to write and maintain.
+
+The final part of the tutorial will demonstrate how to paginate your data when using generic class-based list views.</p>
+</div>
+
+  <h2>Contents of Local Library </h2>
+<p>The library has the following record counts:</p>
+<!--
+  <ul>
+    <li><strong>Books:</strong> {{ num_books }}</li>
+    <li><strong>Copies:</strong> {{ num_instances }}</li>
+    <li><strong>Copies available:</strong> {{ num_ins_ava }}</li>
+    <li><strong>Genres:</strong> {{num_genre}}</li>
+    <li><strong>Authors:</strong> {{ num_authors }}</li>
+  </ul>
+-->
+  <div class="list-group">
+  <a href="{% url 'catalog:books'%}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    <strong>Books </strong>
+    <span class="badge badge-primary badge-pill">{{num_books}}</span>
+  </a>
+  <a href="{% url 'catalog:ava-books' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    <strong> Copies Available </strong>
+    <span class="badge badge-primary badge-pill">{{num_ins_ava}}</span>
+  </a>
+  <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    <strong>Copies Total</strong>
+    <span class="badge badge-primary badge-pill">{{num_instances}}</span>
+  </a>
+  
+  <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    <strong>Genres</strong>
+    <span class="badge badge-primary badge-pill">{{num_genre}}</span>
+  </a>
+  <a href="{% url 'catalog:authors' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    <strong>Authors </strong>
+    <span class="badge badge-primary badge-pill">{{num_authors}}</span>
+  </a>
+</div>
+   <p class=" mt-5 mb-0 pb-0 text-right" > <small class="badge badge-light">Total visited this page
+       {{ num_visitors }}{% if num_visitors == 1 %} time{% else %} times{% endif %}.</small></p>
+   
+{% endblock %}

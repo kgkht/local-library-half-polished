@@ -1,0 +1,10 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="mt-3">
+  <h5> Oops! </h5>
+  <p>You already Logged out!</p>  
+  <a href="{% url 'login'%}">Click here to login again.</a>
+
+  </div>
+{% endblock %}
